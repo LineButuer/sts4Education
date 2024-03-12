@@ -1,0 +1,5 @@
+package com.icia.thymeleafprj02.controller;
+
+public class MainController {
+
+}

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<header th:insert="~{fragments::header}"></header>
+<section>
+	<h2>첫 페이지</h2>
+	<p>Spring Boot Project start~~</p>
+</section>
+<footer th:replace="{fragments::footer}"></footer>
+</body>
+</html>

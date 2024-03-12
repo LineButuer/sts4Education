@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Home</title>
+<style type="text/css">
+	body {
+		display: flex;
+		flex-direction: column;
+	}
+	.header {
+		background-color: black;
+		color: white;
+	}
+	.header h2 {
+		color:white;
+	}
+	section{
+		flex:1;
+	}
+</style>
+</head>
+<body>
+<header th:insert="~{fragments::header}"></header>
+<section>
+	<h2>첫 페이지</h2>
+	<p>Spring Boot Project start~~</p>
+</section>
+<footer th:replace="~{fragments::footer}"></footer>
+</body>
+</html>

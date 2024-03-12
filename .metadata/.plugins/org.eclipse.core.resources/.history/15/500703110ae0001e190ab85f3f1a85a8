@@ -1,0 +1,4 @@
+spring.application.name=thymeleafprj02
+
+#server.port
+server.port=80

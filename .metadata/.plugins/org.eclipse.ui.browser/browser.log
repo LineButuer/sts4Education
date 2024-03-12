@@ -1,0 +1,9 @@
+
+3월 11, 2024 13:30:26.53 NEW SESSION
+3월 11, 2024 13:30:26.54 INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
+3월 11, 2024 14:04:30.42 [4544:11512:0311/140430.427:ERROR:cert_verify_proc_builtin.cc(874)] CertVerifyProcBuiltin for global.ib-ibi.com failed:
+3월 11, 2024 14:04:30.42 ----- Certificate i=0 (CN=*.ib-ibi.com,O=KBM Group LLC,L=Louisville,ST=Colorado,C=US) -----
+3월 11, 2024 14:04:30.42 ERROR: Time is after notAfter
+3월 11, 2024 14:04:30.42 
+3월 11, 2024 14:04:30.42 
+3월 11, 2024 14:36:17.72 [4544:8112:0311/143617.726:ERROR:interface_endpoint_client.cc(707)] Message 0 rejected by interface blink.mojom.WidgetHost
