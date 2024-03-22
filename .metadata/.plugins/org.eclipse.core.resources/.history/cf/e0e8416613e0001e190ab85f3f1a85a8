@@ -1,5 +1,0 @@
-package com.icia.thymeleafprj02.dto;
-
-public class ProductDto {
-
-}

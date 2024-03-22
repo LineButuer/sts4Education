@@ -1,4 +1,0 @@
-3) <th:replace> - 조각 대체. 현재 요소를 대체.
-	<div th:replace="~{frag::footer}">
-	
-	
