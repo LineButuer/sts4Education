@@ -1,50 +1,55 @@
 package com.icia.board.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.icia.board.dto.BoardDto;
 import com.icia.board.dto.MemberDto;
+import com.icia.board.service.BoardService;
 import com.icia.board.service.MemberService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @Slf4j
 public class MemberController {
 	@Autowired
 	private MemberService mServ;
+	@Autowired
+	private BoardService boardService;
 	
 	@GetMapping("/")
 	public String home() {
 		log.info("home()");
 		return "index";
 	}
-	
+
 	@GetMapping("loginForm")
 	public String loginForm() {
 		log.info("loginForm()");
 		return "loginForm";
 	}
-	
+
 	@PostMapping("loginProc")
-	public String loginProc(MemberDto member,
-							HttpSession session,
-							RedirectAttributes rttr) {
+	public String loginProc(MemberDto member, HttpSession session, RedirectAttributes rttr) {
 		log.info("loginProc()");
-		
+
 		return mServ.loginProc(member, session, rttr);
 	}
-	
+
 	@GetMapping("joinForm")
 	public String joinForm() {
 		log.info("joinForm()");
-		
+
 		return "joinForm";
 	}
 
@@ -56,41 +61,51 @@ public class MemberController {
 //		
 //		return "ok";//javascript ajax success의 res로 들어가는 값.
 //	}
-	
+
 	@PostMapping("joinProc")
-	public String joinProc(MemberDto member,
-						   RedirectAttributes rttr) {
+	public String joinProc(MemberDto member, RedirectAttributes rttr) {
 		log.info("joinProc()");
 		String view = mServ.memberJoin(member, rttr);
-		
+
 		return view;
 	}
-	
-	//메일 인증 메핑 메소드
+
+	// 메일 인증 메핑 메소드
 	@GetMapping("authUser")
 	public String authUser() {
 		log.info("authUser()");
 		return "authUser";
 	}
-	
+
 	@GetMapping("pwdChange")
 	public String pwdChange() {
 		log.info("pwdChange()");
-		return"pwdChange";
-		
+		return "pwdChange";
+
 	}
-	
+
 	@PostMapping("pwdChangeProc")
 	public String pwdChangeProc(MemberDto memberDto, HttpSession session, RedirectAttributes rttr) {
 		log.info("pwdChangeProc()");
 		String view = mServ.pwdChangeProc(memberDto, session, rttr);
-	
+
 		return view;
 	}
 	
+	@GetMapping("logout")
+	public String logout(HttpSession session, RedirectAttributes rttr) {
+		log.info("logout()");
+		String view = mServ.logout(session, rttr);
+		
+		return view;
+	}
+	@PostMapping("writeProc")
+	public String writeProc(@RequestPart("files")/* input에서 name이 files*/ List<MultipartFile> files, BoardDto boardDto, HttpSession session
+							, RedirectAttributes rttr) {
+		String view = boardService.boardWrite(files, boardDto, session, rttr);
+		
+		return view;
+	}
 	
+
 }
-
-
-
-

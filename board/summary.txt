@@ -117,4 +117,22 @@ MIME(Multipurpose Internet Mail Extensions)
 	(이미지, 음성 파일, 동영상 파일 등을 담아서 전송이 가능하게 확장된 표준.
 	HTML에 까지 확장되어 현재 사용중.
 
-
+Mybatis SelectKey
+	게시글이 저장되면 순차적으로 게시글의 첨부파일이 저장되는 상황에서, 첨부파일 테이블에 들어가는 게시글의 번호가 언제 생성되는지의 문제.
+	게시글 번호는 게시글 테이블에 데이터가 insert 될 때 생성됨.
+	
+	MySQL의 경우 insert와 동시에 key가 생성됨.
+	Oracle의 경우 insert 전에 key가 생성됨.
+	
+Transation(트랜젝션) 처리
+	CRUD 작업 중 Create, Update, Delete 작업은 트랜젝션 처리가 필요함.
+	트랜젝션 : DB 작업 단위. 
+	
+	insert 5번 수행
+	commit <- 여기까지가 한 트랜젝션
+	insert 3번 수행
+	rollback <- 여기까지가 한 트랜젝션 
+	
+	5번 insert한 내용만 DB에서 처리
+	
+	COMMIT - 최종승인, ROLLBACK - 되돌리기
