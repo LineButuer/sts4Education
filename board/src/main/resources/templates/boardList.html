@@ -80,10 +80,10 @@ $(function(){
 $("#search").click(function(){
 	let keyword = $("#keyword").val();
 	if(keyword==""){
-		alert("검색어를 입력하세요.")
+		alert("검색어를 입력하세요.");
 		return;
 	}
-	let select =$("#sel").val(); // 제목(b_title), 내용(b_contents) 등등
+	let select=$("#sel").val(); // 제목(b_title), 내용(b_contents) 등등
 	
 	location.href = `/boardList?colname=${select}&keyword=${keyword}&pageNum=1`;
 });
