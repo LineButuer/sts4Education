@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>사용자 인증</title>
+	<script src="js/jquery-3.7.1.min.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+	<script th:inline="javascript">
+        
+    </script>
+</head>
+<body>
+	<header>
+		<th:block th:insert="~{fragments::header(${session.member})}" />
+	</header>
+	<section>
+		<div class="content">
+	        <div class="login-form">
+	            <h2 class="login-header">메일 인증</h2>
+	            <input type="text" class="login-input" id="m_id"
+                   	   autofocus placeholder="아이디">
+	            <input type="email" class="login-input" id="m_mail" 
+	            	   placeholder="이메일">
+	            <button type="button" class="login-btn" id="sbtn">인증코드전송</button>
+	            <input type="text" class="login-input tbmg" id="v_code"
+	            	   placeholder="전송받은 인증코드">
+	            <button type="button" class="login-btn tbmg" id="cbtn">코드인증</button>
+	        </div>
+    	</div>
+	</section>
+	<footer>
+		<th:block th:insert="~{fragments::footer}" />
+	</footer>
+</body>
+</html>

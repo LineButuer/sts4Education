@@ -136,3 +136,9 @@ Transation(트랜젝션) 처리
 	5번 insert한 내용만 DB에서 처리
 	
 	COMMIT - 최종승인, ROLLBACK - 되돌리기
+
+
+상세보기 화면
+게시글 수정/삭제
+댓글 처리
+접근 제어

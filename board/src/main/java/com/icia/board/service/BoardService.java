@@ -1,5 +1,6 @@
 package com.icia.board.service;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.icia.board.dao.BoardDao;
 import com.icia.board.dao.MemberDao;
 import com.icia.board.dto.BoardDto;
+import com.icia.board.dto.BoardFileDto;
 import com.icia.board.dto.SearchDto;
 import com.icia.board.util.PagingUtil;
 
@@ -104,6 +106,10 @@ public class BoardService {
 			boardDao.insertBoard(boardDto);
 			log.info("b_num:{}", boardDto.getB_num());
 			// 파일 저장
+			if(!files.get(0).isEmpty()) { // 업로드할 파일이 있다면 업로드를 해라
+				fileUpload(files, session, boardDto.getB_num());
+			}
+			
 			
 			// 작성자의 point 수정
 			
@@ -122,5 +128,42 @@ public class BoardService {
 		rttr.addFlashAttribute("msg", msg);
 		return view;
 	}
+
+	private void fileUpload(List<MultipartFile> files, HttpSession session, int b_num) throws Exception {
+		
+		// 파일 저장 실패 시 데이터베이스 롤백 작업이 이루어지도록 예외를 throws 할 것. 
+		log.info("fileUpload()");
+		
+		// 파일 저장 위치 처리(session에서 저장 경로를 구함)
+		String realPath = session.getServletContext().getRealPath("/");
+		log.info("realPath : {}", realPath);
+		
+		realPath += "upload/"; // 파일 업로드용 폴더
+		
+		File folder = new File(realPath);
+		if(folder.isDirectory() == false) {
+			folder.mkdir();// 폴더 생성 메소드
+		}
 	
-}
+		for(MultipartFile mf : files) {
+			// 파일명 추출
+			String oriname = mf.getOriginalFilename();
+			
+			BoardFileDto bfd = new BoardFileDto();
+			bfd.setBf_oriname(oriname);
+			bfd.setBf_num(b_num);
+			String sysname = System.currentTimeMillis()+oriname.substring(oriname.lastIndexOf("."));
+			
+			// 확장자 : 파일을 구분하기 위한 식별 체계. (예. image.jpg)
+			bfd.setBf_sysname(sysname);
+			
+			//파일 저장
+			File file = new File(realPath + sysname);
+			mf.transferTo(file);
+			
+			// 파일 정보 저장
+			boardDao.insertFile(bfd);
+		}
+	}
+	
+}// class end

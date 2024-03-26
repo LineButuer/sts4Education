@@ -23,6 +23,13 @@
 		INSERT INTO board
 		VALUES(NULL, #{b_title}, #{b_contents}, #{b_id}, DEFAULT, DEFAULT)
 	</insert>
+
+	<insert id="insertFile" parameterType="BoardFileDto">
+		INSERT INTO boardfile
+		VALUES(NULL, #{bf_bnum}, #{bf_oriname}, #{bf_sysname})
+	
+	</insert>
+	
 	
 </mapper>
 
