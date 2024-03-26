@@ -99,13 +99,7 @@ public class MemberController {
 		
 		return view;
 	}
-	@PostMapping("writeProc")
-	public String writeProc(@RequestPart("files")/* input에서 name이 files*/ List<MultipartFile> files, BoardDto boardDto, HttpSession session
-							, RedirectAttributes rttr) {
-		String view = boardService.boardWrite(files, boardDto, session, rttr);
-		
-		return view;
-	}
+	
 	
 
 }

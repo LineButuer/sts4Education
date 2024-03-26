@@ -16,6 +16,7 @@ import com.icia.board.dao.BoardDao;
 import com.icia.board.dao.MemberDao;
 import com.icia.board.dto.BoardDto;
 import com.icia.board.dto.BoardFileDto;
+import com.icia.board.dto.ReplyDto;
 import com.icia.board.dto.SearchDto;
 import com.icia.board.util.PagingUtil;
 
@@ -151,7 +152,7 @@ public class BoardService {
 			
 			BoardFileDto bfd = new BoardFileDto();
 			bfd.setBf_oriname(oriname);
-			bfd.setBf_num(b_num);
+			bfd.setBf_bnum(b_num);
 			String sysname = System.currentTimeMillis()+oriname.substring(oriname.lastIndexOf("."));
 			
 			// 확장자 : 파일을 구분하기 위한 식별 체계. (예. image.jpg)
@@ -164,6 +165,25 @@ public class BoardService {
 			// 파일 정보 저장
 			boardDao.insertFile(bfd);
 		}
+	}
+
+	public String getBoard(int b_num, Model model) {
+		log.info("getBoard()");
+		
+		// 게시글 번호(b_num)로 게시물 가져오기		
+		BoardDto boardDto = boardDao.selectBoard(b_num);
+		model.addAttribute("board", boardDto);
+		
+		//파일 목록 가져오기
+		List<BoardFileDto> bfList = boardDao.selectFileList(b_num);
+		model.addAttribute("bfList", bfList);
+		
+		
+		//댓글 목록가져오기
+		List<ReplyDto> rList = boardDao.selectReplyList(b_num);
+		model.addAttribute("rList", rList);
+	
+		return "boardDetail";
 	}
 	
 }// class end

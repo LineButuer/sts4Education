@@ -59,11 +59,37 @@
             <div>
                 <div class="t_content p-15 file_h">FILES</div>
                 <div class="d_content p-85 file_h" style="overflow: auto">
-                    
+                    	<th:block th:if="${#lists.isEmpty(bfList)}">
+                    		첨부된 파일이 없습니다.
+                    	</th:block>
+                    	<th:block th:unless="${#lists.isEmpty(bfList)}">
+                    		<th:block th:each="fitem:${bfList}">
+                    			<a>
+                    				<span class="file-title" th:text="${fitem.bf_oriname}"></span>
+                    			</a>
+                    		</th:block>
+                    	</th:block>
                 </div>
             </div>
             <div> <!-- 이미지 file 미리보기 영역 -->
-                
+                <th:block th:unless="${#lists.isEmpty(bfList)}">
+                	<div class="t_content p-15 preview_h">PREVIEW</div>
+					<div class="t_content p-85 preview_h" style="overflow:auto">
+						<th:block th:each="fitem:${bfList}">
+							<th:block th:if="${#strings.contains(fitem.bf_oriname, '.png')}">
+								<img th:src="@{upload/}+${fitem.bf_sysname}" width="100%">
+						</th:block>
+						<th:block th:if="${#strings.contains(fitem.bf_oriname, '.jpg')}">
+								<img th:src="@{upload/}+${fitem.bf_sysname}" width="100%">
+						</th:block>
+						<th:block th:if="${#strings.contains(fitem.bf_oriname, '.webp')}">
+								<img th:src="@{upload/}+${fitem.bf_sysname}" width="100%">
+						</th:block>
+						<th:block th:if="${#strings.contains(fitem.bf_oriname, '.gif')}">
+								<img th:src="@{upload/}+${fitem.bf_sysname}" width="100%">
+						</th:block>
+					</div>
+                </th:block>
             </div>
             <div class="btn-area">
                 <button class="btn-write" id="upbtn">U</button>

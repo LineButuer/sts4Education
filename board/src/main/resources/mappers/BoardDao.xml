@@ -27,9 +27,19 @@
 	<insert id="insertFile" parameterType="BoardFileDto">
 		INSERT INTO boardfile
 		VALUES(NULL, #{bf_bnum}, #{bf_oriname}, #{bf_sysname})
-	
 	</insert>
 	
+	<select id="selectBoard" parameterType="Integer" resultType="BoardDto">
+		SELECT * FROM blist WHERE b_num=#{b_num}
+	</select>
+	
+	<select id="selectFileList" parameterType="Integer" resultType="BoardFileDto">
+		SELECT * FROM boardfile WHERE bf_bnum=#{b_num}
+	</select>
+	
+	<select id="selectReplyList" parameterType="Integer" resultType="ReplyDto">
+		SELECT * FROM rlist WHERE r_bnum=#{b_num}
+	</select>
 	
 </mapper>
 
