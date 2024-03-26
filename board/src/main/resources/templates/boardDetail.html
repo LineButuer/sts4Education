@@ -64,7 +64,7 @@
                     	</th:block>
                     	<th:block th:unless="${#lists.isEmpty(bfList)}">
                     		<th:block th:each="fitem:${bfList}">
-                    			<a>
+                    			<a th:href="@{download(bf_sysname=${fitem.bf_sysname}, bf_oriname=${fitem.bf_oriname})}">
                     				<span class="file-title" th:text="${fitem.bf_oriname}"></span>
                     			</a>
                     		</th:block>
@@ -112,7 +112,11 @@
             </form>
             <!-- 댓글 출력 부분 -->
             <div id="rSpace">
-                
+               <th:block th:each="ritem:${rList}">
+               		<div class="t_content p-20 re" th:text="${ritem.r_id}"></div>
+               		<div class="t_content p-50 re" th:text="${ritem.r_contents}"></div>
+               		<div class="t_content p-30 re" th:text="${ritem.r_date}"></div>
+               </th:block>
             </div>
         </div>
     </div>
@@ -122,6 +126,44 @@
 </footer>
 </body>
 <script th:inline="javascript">
+	// 댓글 저장 처리
+	$("#rbtn").click(function(){
+		const rForm = $("#rform").serialize();
+		console.log(rForm);
+		
+		// restController로 전송
+		$.ajax({
+			url: "replyInsert",
+			type: "post",
+			data: rForm,
+			success: function(res){
+				console.log(res);
+				if(res != null){
+					let str ="";
+					str += `
+						<div class="t_content p-20 re">${res.r_id}</div>
+						<div class="t_content p-50 re">${res.r_contents}</div>
+						<div class="t_content p-30 re">${res.r_date}</div>
+					`; 
+					$("#rSpace").prepend(str);
+					$("#comment").val("");
+				}else {
+					
+				}
+			},
+			error: function(err){
+				console.log(err)
+				alert("댓글 저장 실패");
+				$("comment").focus();
+			}
+			
+		});
+		
+		
+	});
+	
+	
+	
         
 </script>
 </html>

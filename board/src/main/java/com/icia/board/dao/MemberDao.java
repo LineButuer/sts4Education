@@ -19,6 +19,9 @@ public interface MemberDao {
 	// 비밀번호 변경 메소드
 	void updatePassword(MemberDto member);
 	
+	//회원 포인트 업데이트
+	void updateMemberPoint(MemberDto memberDto);
+	
 }
 
 

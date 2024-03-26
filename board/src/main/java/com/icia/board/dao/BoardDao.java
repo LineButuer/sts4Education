@@ -31,4 +31,8 @@ public interface BoardDao {
 	
 	// 댓글 목록 가져오는 메소드
 	List<ReplyDto> selectReplyList(int b_num);
+
+	void insertReply(ReplyDto reply);
+
+	ReplyDto selectReply(int r_num);
 }

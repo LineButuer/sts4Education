@@ -1,9 +1,18 @@
 package com.icia.board.service;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -16,6 +25,7 @@ import com.icia.board.dao.BoardDao;
 import com.icia.board.dao.MemberDao;
 import com.icia.board.dto.BoardDto;
 import com.icia.board.dto.BoardFileDto;
+import com.icia.board.dto.MemberDto;
 import com.icia.board.dto.ReplyDto;
 import com.icia.board.dto.SearchDto;
 import com.icia.board.util.PagingUtil;
@@ -113,6 +123,18 @@ public class BoardService {
 			
 			
 			// 작성자의 point 수정
+			MemberDto memberDto = (MemberDto) session.getAttribute("member"); // 여기서 member는 DTO가 아니라 session임 memberService에 가면 있음.
+			int point = memberDto.getM_point() + 10;
+			if(point >100) {
+				point = 100;
+			}
+			
+			memberDto.setM_point(point);
+			memberDao.updateMemberPoint(memberDto);
+			
+			// 세션에 새 정보를 저장
+			memberDto = memberDao.selectMember(memberDto.getM_id());
+			session.setAttribute("memberDto", memberDto);
 			
 			// 정상적으로 처리되면 commit을 수행됨
 			manager.commit(status);
@@ -184,6 +206,43 @@ public class BoardService {
 		model.addAttribute("rList", rList);
 	
 		return "boardDetail";
+	}
+
+	public ReplyDto replyInsert(ReplyDto reply) {
+		log.info("replyInsert()");
+		
+		TransactionStatus status = manager.getTransaction(definition);
+		
+		try {
+			boardDao.insertReply(reply);
+			reply = boardDao.selectReply(reply.getR_num());
+			manager.commit(status);
+		} catch (Exception e) {
+			e.printStackTrace();
+			manager.rollback(status);
+			reply=null;
+		} 
+			
+		
+		
+		return reply;
+	}
+
+	public ResponseEntity<Resource> fileDownload(BoardFileDto boardFileDto, HttpSession session) throws IOException {
+		log.info("fileDownload()");
+		String realPath = session.getServletContext().getRealPath("/");
+		realPath += "upload/"+boardFileDto.getBf_sysname();
+				
+		// 실제 하드디스크에 저장된파일과 연동하는 객체를 생성.
+		InputStreamResource fResource = new InputStreamResource(new FileInputStream(realPath));
+		
+		// 파일명이 한글일 경우 인코딩 처리가 필요함(UTF-8로 인코딩 해야됨)
+		String fileName = URLEncoder.encode(boardFileDto.getBf_oriname(), "UTF-8");
+		return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_OCTET_STREAM) //octet은 8을 의미함 
+				.cacheControl(CacheControl.noCache())
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename="+fileName)
+				.body(fResource); 
 	}
 	
 }// class end

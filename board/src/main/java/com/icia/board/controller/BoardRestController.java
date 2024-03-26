@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.icia.board.dto.MemberDto;
+import com.icia.board.dto.ReplyDto;
+import com.icia.board.service.BoardService;
 import com.icia.board.service.MailService;
 import com.icia.board.service.MemberService;
 
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 
-
+//a.jax는 여기다가 모아둔다
 @RestController
 @Slf4j
 public class BoardRestController {
@@ -33,6 +35,9 @@ public class BoardRestController {
 		return res;
 	}
 	
+	@Autowired
+	private BoardService boardService;
+	
 	@PostMapping("mailConfirm")
 	public String mailConfirm(MemberDto memberDto, HttpSession sesstion) {
 		log.info("mailConfirm()");
@@ -48,6 +53,13 @@ public class BoardRestController {
 		return res;
 	}
 	
+	@PostMapping("replyInsert")
+	public ReplyDto replyInsert(ReplyDto reply) {
+		log.info("replyInsert()");
+		reply= boardService.replyInsert(reply);
+		
+		return reply;
+	}
 	
 }
 
