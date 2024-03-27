@@ -64,5 +64,23 @@
 		WHERE b_num=#{b_num}
 	</update>
 	
+	<select id="selectFnameList" parameterType="Integer" resultType="String">
+		SELECT bf_sysname FROM boardfile WHERE bf_bnum=#{b_num}
+	</select>
+	
+	<delete id="deleteFiles" parameterType="Integer">
+		DELETE FROM boardfile
+		WHERE bf_bnum=#{b_num}
+	</delete>
+	
+	<delete id="deleteReplys" parameterType="Integer">
+		DELETE FROM reply
+		WHERE r_bnum=#{b_num}
+	</delete>
+	
+	<delete id="deleteBoard" parameterType="Integer">
+		DELETE FROM board
+		WHERE b_num=#{b_num}
+	</delete>
 </mapper>
 

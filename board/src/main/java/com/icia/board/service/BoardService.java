@@ -313,4 +313,53 @@ public class BoardService {
     return view;
   }
 
+public String boardDelete(int b_num, HttpSession session, RedirectAttributes rttr) {
+	// TODO Auto-generated method stub
+	
+	TransactionStatus status = manager.getTransaction(definition);
+	String view = null;
+	String msg = null;
+	
+	try {
+		//1. 파일 삭제를 위한 파일명 목록 구하기 
+		List<String> fSysnameList = bDao.selectFnameList(b_num);
+		//2. 파일 목록 삭제(DB)
+		bDao.deleteFiles(b_num);
+		//3. 댓글 목록 삭제(DB)
+		bDao.deleteReplys(b_num);
+		//4. 게시글 삭제(DB)
+		bDao.deleteBoard(b_num);
+		//5. 실제 파일 삭제
+		if(fSysnameList.size()!=0) {
+			deleteFiles(fSysnameList, session);
+		}
+		manager.commit(status);
+		view = "redirect:boardList?pageNum=1";
+		msg = "삭제 성공";
+	} catch (Exception e) {
+		e.printStackTrace();
+		manager.rollback(status);
+		view = "redirect:boardDetail?b_bnum="+b_num;
+		msg = "삭제 실패";
+	}
+	
+	rttr.addFlashAttribute("msg", msg);
+	
+	return view;
+}
+
+private void deleteFiles(List<String> fSysnameList, HttpSession session) throws Exception {
+	// TODO Auto-generated method stub
+	log.info("deleteFiles()");
+	String realPath = session.getServletContext().getRealPath("/");
+	realPath += "upload/";
+	
+	for(String sn : fSysnameList) {
+		File file = new File(realPath + sn);
+		if(file.exists()==true) {
+			file.delete(); // 파일 삭제
+		}
+	}
+}
+
 }// class end
