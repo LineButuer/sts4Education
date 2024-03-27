@@ -31,8 +31,12 @@ public interface BoardDao {
 	
 	// 댓글 목록 가져오는 메소드
 	List<ReplyDto> selectReplyList(int b_num);
-
+	// 댓글 저장 메소드
 	void insertReply(ReplyDto reply);
-
+	// 마지막 저장 댓글 불러오기 메소드
 	ReplyDto selectReply(int r_num);
+	// 파일 정보 삭제 메소드
+	void deleteFile(String bf_sysname);
+	// 게시물 수정 메소드
+	void updateBoard(BoardDto boardDto);
 }

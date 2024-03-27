@@ -53,5 +53,16 @@
 		SELECT * FROM rlist WHERE r_num=#{r_num}
 	</select>
 	
+	<delete id="deleteFile" parameterType="String">
+		DELETE FROM boardfile
+		WHERE bf_sysname=#{bf_sysname}
+	</delete>
+	
+	<update id="updateBoard" parameterType="BoardDto">
+		UPDATE board
+		SET b_title=#{b_title}, b_contents=#{b_contents}
+		WHERE b_num=#{b_num}
+	</update>
+	
 </mapper>
 
